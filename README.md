@@ -1,8 +1,12 @@
-## sbt project compiled with Scala 3
+# Finite Automata Modelling in Scala
 
-### Usage
+This is a toy project to further my practical working knowledge with Scala 3.
+The aim of this project is to model finite automata (both deterministic and non-deterministic).
 
-This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
+## Usage 
 
-For more information on the sbt-dotty plugin, see the
-[scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).
+None as of yet.
+
+## Applications:
+
+1. Build and verify regex?
