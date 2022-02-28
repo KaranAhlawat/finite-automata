@@ -1,29 +1,29 @@
-package automata
+package automata.finite
 
 class FiniteAutomataSuite extends munit.FunSuite:
-  import finite.FA._
+  import automata.finite.FiniteAutomata
 
   trait TestFA:
-    val dfaOne = DFA(
-      states = Set(0),
-      sigma = Set('a'),
-      transition = (state, sym) => 0,
-      initial = 0,
-      f = Set(0)
-    )
+    object dfaOne extends FiniteAutomata[Int, Char]:
+      override val states: States = List(0)
+      override val sigma: Set[Alphabet] = Set('a')
+      override val initial: State = 0
+      override val accept: States = List(0)
+      override val transition: (State, Alphabet) => State = (state, sym) => 0
 
-    val dfaTwo = DFA(
-      states = Set(0),
-      sigma = Set('a'),
-      transition = (state, sym) => 0,
-      initial = 0,
-      f = Set()
-    )
+    object dfaTwo extends FiniteAutomata[Int, Char]:
+      override val states: States = List(0)
+      override val sigma: Set[Alphabet] = Set('a')
+      override val initial: State = 0
+      override val accept: States = Nil
+      override val transition: (State, Alphabet) => State = (state, sym) => 0
 
-    val dfaThree = DFA(
-      states = Set(1, 2, 3),
-      sigma = Set('1', '0'),
-      transition = (state, sym) =>
+    object dfaThree extends FiniteAutomata[Int, Char]:
+      override val states: States = List(1, 2, 3)
+      override val sigma: Set[Alphabet] = Set('0', '1')
+      override val initial: State = 1
+      override val accept: States = List(3)
+      override val transition: (State, Alphabet) => State = (state, sym) =>
         (state, sym) match {
           case (1, '0') => 1
           case (1, '1') => 2
@@ -31,10 +31,7 @@ class FiniteAutomataSuite extends munit.FunSuite:
           case (2, '1') => 3
           case (3, '0') => 3
           case (3, '1') => 3
-        },
-      initial = 1,
-      f = Set(3)
-    )
+        }
 
   test("Empty DFA with initial as final always accepts") {
     new TestFA:
@@ -53,7 +50,7 @@ class FiniteAutomataSuite extends munit.FunSuite:
       assertEquals(dfaThree.accepts("001001"), false)
   }
 
-  test("DFA responsds to invalid input") {
+  test("DFA responds to invalid input") {
     new TestFA:
       assertEquals(dfaThree.accepts("01102"), false)
   }

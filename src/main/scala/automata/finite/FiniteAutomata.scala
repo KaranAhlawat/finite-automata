@@ -2,28 +2,21 @@ package automata.finite
 
 import scala.annotation.tailrec
 
-object FA:
-  type State = Int
-  type Alphabet = Char
-  case class DFA(
-      private val states: Set[State],
-      private val sigma: Set[Alphabet],
-      private val transition: (State, Alphabet) => State,
-      private val initial: State,
-      private val f: Set[State]
-  ):
+trait FiniteAutomata[T, A]():
+  type Alphabet = A
+  type State = T
+  type States = Seq[State]
 
-    require(
-      states.contains(initial),
-      "Initial state should be an element of Q (set of all states)"
-    )
-    require(f.subsetOf(states), "F should be a subset of Q")
+  val states: States
+  val sigma: Set[Alphabet]
+  val initial: State
+  val accept: States
+  val transition: (State, Alphabet) => State
 
-    def accepts(string: String): Boolean =
-      @tailrec
-      def recur(state: State, string: String): Boolean =
-        if string.isEmpty then f.contains(state)
-        else if sigma.contains(string.head) then
-          recur(transition(state, string.head), string.tail)
-        else false
-      recur(initial, string)
+  def accepts(string: Seq[Alphabet]): Boolean =
+    @tailrec
+    def recur(state: State, string: Seq[Alphabet]): Boolean =
+      if string.isEmpty then accept.contains(state)
+      else if !sigma.contains(string.head) then false
+      else recur(transition(state, string.head), string.tail)
+    recur(initial, string)
